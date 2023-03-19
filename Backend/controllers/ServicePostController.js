@@ -92,10 +92,8 @@ exports.getServicePostsForUser = async (req, res) => {
   try {
     // Get the user ID from the authenticated request
     const userId = req.userId;
-
     // Find all service posts for the user
     const servicePosts = await ServicePost.find({ userId: userId });
-
     res.status(200).json(servicePosts);
   } catch (err) {
     res.status(500).json({

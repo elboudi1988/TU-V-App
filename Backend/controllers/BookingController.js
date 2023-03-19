@@ -1,7 +1,7 @@
 // controllers/bookingServiceController.js
+const ServicePost = require("../models/servicePost");
 const BookingService = require("../models/BookingService");
 //const ServicePost = require("../models/ServicePost");
-const ServicePost = require("../models/servicePost");
 
 exports.getUserBooking = async (req, res) => {
   try {
@@ -14,20 +14,34 @@ exports.getUserBooking = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 exports.getAdminBooking = async (req, res) => {
   try {
     const userId = req.userId;
-    const serviceId = req.serviceId;
-    const servicePost = await ServicePost.find({ userId: userId });
-    const AdminBooking = await servicePost.find({ _id: serviceId });
-    const adminbook = await AdminBooking.find;
-    res.status(200).json(adminbook);
+
+    const servicePosts = await ServicePost.find({ userId: userId });
+
+    if (servicePosts.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No services found for this admin." });
+    }
+
+    const serviceIds = servicePosts.map((service) => service._id);
+
+    const bookings = await BookingService.find({
+      serviceId: { $in: serviceIds },
+    })
+      .populate("userId", "first_name last_name email")
+      .populate("serviceId", "serviceName companyName");
+
+    res.status(200).json({ bookings });
   } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
+    console.error(error);
+    res.status(500).json({ message: error.message });
   }
 };
+
 exports.createBooking = async (req, res) => {
   try {
     const { serviceId } = req.params;

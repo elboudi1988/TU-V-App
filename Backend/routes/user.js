@@ -34,5 +34,5 @@ router.put("/update/:id", auth, isAdmin, updateServicePost);
 
 router.post("/booking/:serviceId", auth, createBooking);
 router.get("/userbooking", auth, getUserBooking);
-router.get("/adminbooking", getAdminBooking);
+router.get("/adminbooking", auth, isAdmin, getAdminBooking);
 module.exports = router;
