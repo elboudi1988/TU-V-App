@@ -41,6 +41,44 @@ exports.getAdminBooking = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+exports.updateStatusBooking = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { status } = req.body;
+    const { bookingId } = req.params;
+
+    const servicePosts = await ServicePost.find({ userId: userId });
+
+    if (servicePosts.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No services found for this admin." });
+    }
+
+    const serviceIds = servicePosts.map((service) => service._id);
+
+    const booking = await BookingService.findOne({
+      serviceId: { $in: serviceIds },
+      _id: bookingId,
+    });
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found." });
+    }
+
+    booking.status = status;
+
+    await booking.save();
+
+    res.status(200).json({
+      message: "Booking status updated successfully",
+      booking,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
 
 exports.createBooking = async (req, res) => {
   try {
@@ -63,28 +101,38 @@ exports.createBooking = async (req, res) => {
 
 exports.updateBooking = async (req, res) => {
   try {
+    const userId = req.userId;
     const { bookingId } = req.params;
-    const { date, status } = req.body;
+    const { date } = req.body;
 
-    const updatedBooking = await BookingService.findByIdAndUpdate(
-      bookingId,
-      {
-        date,
-        status,
-      },
-      { new: true }
-    );
+    const updatedBooking = await BookingService.findById(bookingId);
+    if (!updatedBooking || updatedBooking.userId.toString() !== userId) {
+      throw new Error("Booking not found");
+    }
 
-    res.status(200).json(updatedBooking);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    updatedBooking.date = date;
+    await updatedBooking.save();
+    res.status(200).json({
+      message: "Booking updated successfully",
+      BookingService,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
 exports.deleteBooking = async (req, res) => {
   try {
+    const userId = req.userId;
     const { bookingId } = req.params;
+    const { date } = req.body;
 
+    const updatedBooking = await BookingService.findById(bookingId);
+    if (!updatedBooking || updatedBooking.userId.toString() !== userId) {
+      throw new Error("Booking not found");
+    }
     await BookingService.findByIdAndDelete(bookingId);
     res.status(200).json({ message: "Booking deleted successfully" });
   } catch (error) {

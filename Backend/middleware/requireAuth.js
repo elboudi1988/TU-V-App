@@ -18,7 +18,7 @@ exports.auth = (req, res, next) => {
     req.userId = decoded.id;
     req.companyName = decoded.companyName;
     req.email = decoded.email;
-    req.role = decoded.role; // Get the role from the decoded token
+    req.role = decoded.role;
     next();
   } catch (error) {
     console.error(error.message);

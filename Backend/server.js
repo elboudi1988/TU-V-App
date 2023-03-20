@@ -29,7 +29,7 @@ function options(req, res) {
 }
 beispielende*/
 //routes
-const useRoutes = require("./routes/user");
+const useRoutes = require("./routes/routes");
 app.use("/api", useRoutes);
 //fs.readdirSync("./routes").map((r) => app.use("./", require("./routes/" + r)));
 

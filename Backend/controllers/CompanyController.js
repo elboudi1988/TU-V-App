@@ -43,7 +43,7 @@ exports.register = async (req, res) => {
         message: "first name must between 3 and 30 characters.",
       });
     }
-    if (!validateLength(companyName, 3, 35)) {
+    /* if (!validateLength(companyName, 3, 35)) {
       return res.status(400).json({
         message: "company name must be between 3 and 35 characters. ",
       });
@@ -57,7 +57,7 @@ exports.register = async (req, res) => {
       return res.status(400).json({
         message: "City must be between 2 and 20 characters.",
       });
-    }
+    }*/
     if (!validateLength(password, 6, 30)) {
       return res.status(400).json({
         message: "password must be atleast 6 characters.",
