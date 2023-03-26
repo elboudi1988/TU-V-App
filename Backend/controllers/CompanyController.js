@@ -190,3 +190,19 @@ exports.logout = (req, res) => {
   res.clearCookie("Authorization", "");
   res.status(200).json({ message: "Logged out successfully" });
 };
+exports.getusers = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    res.status(200).json({
+      status: "success",
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "An error occurred while fetching the current user",
+    });
+  }
+};

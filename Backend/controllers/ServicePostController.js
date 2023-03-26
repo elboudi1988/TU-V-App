@@ -9,11 +9,13 @@ exports.createServicePost = async (req, res) => {
     // Create a new service post with the user ID
     const servicePost = new ServicePost({
       serviceName: req.body.serviceName,
-      address: req.body.address,
+      street: req.body.street,
+      house_number: req.body.house_number,
+      city: req.body.city,
+      plz: req.body.plz,
       companyName: companyName,
       userId: userId,
     });
-
     // Save the service post to the database
     await servicePost.save();
 

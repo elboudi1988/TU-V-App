@@ -5,9 +5,25 @@ const ServiceSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  address: {
+  street: {
     type: String,
-    required: true,
+    trim: true,
+    text: true,
+  },
+  house_number: {
+    type: String,
+    trim: true,
+    text: true,
+  },
+  city: {
+    type: String,
+    trim: true,
+    text: true,
+  },
+  plz: {
+    type: String,
+    trim: true,
+    text: true,
   },
   companyName: {
     type: String,

@@ -15,6 +15,7 @@ exports.auth = (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    req.user = decoded;
     req.userId = decoded.id;
     req.companyName = decoded.companyName;
     req.email = decoded.email;

@@ -4,6 +4,7 @@ const {
   ActivateAcount,
   logout,
   login,
+  getusers,
 } = require("../controllers/CompanyController");
 const { isAdmin, auth } = require("../middleware/requireAuth");
 const {
@@ -27,6 +28,7 @@ router.post("/register", register);
 router.post("/activate", ActivateAcount);
 router.post("/login", login);
 router.get("/logout", logout);
+router.get("/getuser", auth, getusers);
 //Services
 router.post("/createservice", auth, isAdmin, createServicePost);
 router.get("/ServicePostsForUser", auth, isAdmin, getServicePostsForUser);
