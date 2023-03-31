@@ -13,6 +13,7 @@ function Login() {
         email,
         password,
       });
+
       // Token im Cookie speichern
       Cookies.set("token", response.data.token, { expires: 7, path: "/" });
       // Benutzer auf die Startseite umleiten

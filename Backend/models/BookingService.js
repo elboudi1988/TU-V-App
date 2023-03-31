@@ -1,7 +1,7 @@
-// models/BookingService.js
+// models/Booking.js
 const mongoose = require("mongoose");
 
-const BookingServiceSchema = new mongoose.Schema({
+const BookingSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -16,6 +16,10 @@ const BookingServiceSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  time: {
+    type: Date,
+    required: true,
+  },
   status: {
     type: String,
     enum: ["pending", "confirmed", "completed", "canceled"],
@@ -23,4 +27,4 @@ const BookingServiceSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("BookingService", BookingServiceSchema);
+module.exports = mongoose.model("BookingService", BookingSchema);

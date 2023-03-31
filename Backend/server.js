@@ -9,6 +9,7 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
+const path = require("path");
 
 /*beispielanfang
 let allowed = ["http://localhost:3000", "some other link"];
@@ -29,6 +30,7 @@ function options(req, res) {
 }
 beispielende*/
 //routes
+app.use(express.static(path.join(__dirname, "build")));
 const useRoutes = require("./routes/routes");
 app.use("/api", useRoutes);
 //fs.readdirSync("./routes").map((r) => app.use("./", require("./routes/" + r)));

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactSwitch from "react-switch";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -20,10 +22,14 @@ function Register() {
     // weitere Felder für Benutzerdetails
   });
 
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+  const handleDateChange = (date) => {
+    setFormData({ ...formData, birthDate: date });
   };
 
   const handleSubmit = async (event) => {
@@ -36,16 +42,26 @@ function Register() {
       console.log(response.data);
       // Hier kannst du weitere Aktionen durchführen, z. B. den Benutzer zur Anmeldeseite weiterleiten
     } catch (error) {
-      console.error("Fehler bei der Registrierung:", error);
-      // Hier kannst du Fehlermeldungen anzeigen oder andere Fehlerbehandlungen durchführen
+      if (error.response && error.response.status === 409) {
+        // Email already exists
+        setErrorMessage("E-Mail ist bereits registriert.");
+      } else {
+        console.error("Fehler bei der Registrierung:", error);
+        setErrorMessage(
+          "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+        );
+      }
     }
   };
   const handleChange = (val) => {
     setChecked(val);
   };
-  if (checked) {
-    FormData.role = "admin";
-  }
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      role: checked ? "admin" : "client",
+    }));
+  }, [checked]);
 
   return (
     <>
@@ -57,6 +73,7 @@ function Register() {
       {!checked ? (
         <div>
           <h1>Client</h1>
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <form onSubmit={handleSubmit}>
             <label>Email:</label>
             <input
@@ -74,10 +91,22 @@ function Register() {
               onChange={handleInputChange}
               required
             />
+            <label>Anrede:</label>
+            <select
+              name="anrede"
+              value={formData.anrede}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Bitte auswählen</option>
+              <option value="Herr">Herr</option>
+              <option value="Frau">Frau</option>
+            </select>
+
             <label>First Name:</label>
             <input
               type="text"
-              name="firstName"
+              name="first_name"
               value={formData.first_name}
               onChange={handleInputChange}
               required
@@ -85,42 +114,17 @@ function Register() {
             <label>Last Name:</label>
             <input
               type="text"
-              name="lastName"
+              name="last_name"
               value={formData.last_name}
               onChange={handleInputChange}
               required
             />
-            <label>Last Name:</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.last_name}
-              onChange={handleInputChange}
-              required
-            />
-            <h1>Birthday</h1>
-            <label>day:</label>
-            <input
-              type=""
-              name="bDay"
-              value={formData.bDay}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Month:</label>
-            <input
-              type=""
-              name="bMonth"
-              value={formData.bMonth}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Year:</label>
-            <input
-              type=""
-              name="bYear"
-              value={formData.bYear}
-              onChange={handleInputChange}
+            <h1>Geburtsdatum</h1>
+            <DatePicker
+              selected={formData.birthDate}
+              onChange={handleDateChange}
+              dateFormat="dd.MM.yyyy"
+              name="birthDate"
               required
             />
             {/* Weitere Felder für Benutzerdetails */}
@@ -130,6 +134,7 @@ function Register() {
       ) : (
         <div>
           <h1>Admin</h1>
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <form onSubmit={handleSubmit}>
             <label>Email:</label>
             <input
@@ -147,10 +152,22 @@ function Register() {
               onChange={handleInputChange}
               required
             />
+            <label>Anrede:</label>
+            <select
+              name="anrede"
+              value={formData.anrede}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Bitte auswählen</option>
+              <option value="Herr">Herr</option>
+              <option value="Frau">Frau</option>
+            </select>
+
             <label>First Name:</label>
             <input
               type="text"
-              name="firstName"
+              name="first_name"
               value={formData.first_name}
               onChange={handleInputChange}
               required
@@ -158,34 +175,17 @@ function Register() {
             <label>Last Name:</label>
             <input
               type="text"
-              name="lastName"
+              name="last_name"
               value={formData.last_name}
               onChange={handleInputChange}
               required
             />
-            <h1>Birthday</h1>
-            <label>day:</label>
-            <input
-              type=""
-              name="bDay"
-              value={formData.bDay}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Month:</label>
-            <input
-              type=""
-              name="bMonth"
-              value={formData.bMonth}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Year:</label>
-            <input
-              type=""
-              name="bYear"
-              value={formData.bYear}
-              onChange={handleInputChange}
+            <h1>Geburtsdatum</h1>
+            <DatePicker
+              selected={formData.birthDate}
+              onChange={handleDateChange}
+              dateFormat="dd.MM.yyyy"
+              name="birthDate"
               required
             />
             <label>companyName:</label>
@@ -207,7 +207,7 @@ function Register() {
             <label>House Number:</label>
             <input
               type=""
-              name="House Number"
+              name="house_number"
               value={formData.house_number}
               onChange={handleInputChange}
               required

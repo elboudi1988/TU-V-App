@@ -17,9 +17,7 @@ exports.register = async (req, res) => {
       username,
       email,
       password,
-      bYear,
-      bMonth,
-      bDay,
+      birthDate,
       companyName,
       house_number,
       street,
@@ -34,7 +32,7 @@ exports.register = async (req, res) => {
     }
     const check = await User.findOne({ email });
     if (check) {
-      return res.status(400).json({
+      return res.status(409).json({
         message: "Email adresse already exists",
       });
     }
@@ -71,9 +69,7 @@ exports.register = async (req, res) => {
       anrede,
       first_name,
       last_name,
-      bYear,
-      bMonth,
-      bDay,
+      birthDate,
       email,
       password: cryptedPassword,
       username: newUsername,
@@ -170,6 +166,7 @@ exports.login = async (req, res) => {
       verified: user.verified,
       role: user.role, // Send the role to the client
       companyName: user.companyName,
+      token: token,
       message: "Register Success! Please activate your Email to start",
     });
   } catch (error) {

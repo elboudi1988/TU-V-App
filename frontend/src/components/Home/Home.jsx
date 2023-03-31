@@ -1,43 +1,64 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import MarckerClusterGroup from "react-leaflet-cluster";
+import "./Map.css";
+import fetchUserData from "../GetUser";
 
-function SetMapCenter({ center, zoom }) {
-  const map = useMap();
-  const prevCenter = useRef(center);
-
-  useEffect(() => {
-    if (JSON.stringify(prevCenter.current) !== JSON.stringify(center)) {
-      prevCenter.current = center;
-      map.setView(center, zoom);
-    }
-  }, [center, zoom, map]);
-
-  return null;
-}
-
-function Map() {
+function Map({ userId }) {
   const [geocodes, setGeocodes] = useState([]);
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [mapCenter, setMapCenter] = useState(position);
   const [mapZoom, setMapZoom] = useState(10);
+  const [resultsToShow, setResultsToShow] = useState(50);
+  const [userData, setUserData] = useState(null);
 
   const customIcon = new Icon({
     iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149060.png",
     iconSize: [38, 38],
   });
-
+  const getCookie = (name) => {
+    const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+    if (match) {
+      return match[2];
+    }
+    return null;
+  };
+  const handleShowMore = () => {
+    setResultsToShow(resultsToShow + 50);
+  };
+  const SetMapCenter = ({ center, zoom }) => {
+    const map = useMap();
+    const prevCenter = useRef(center);
+    useEffect(() => {
+      if (JSON.stringify(prevCenter.current) !== JSON.stringify(center)) {
+        prevCenter.current = center;
+        map.setView(center, zoom);
+      }
+    }, [center, zoom, map]);
+    return null;
+  };
+  useEffect(() => {
+    const token = getCookie("token");
+    fetchUserData(token)
+      .then((data) => setUserData(data))
+      .catch((error) => console.error("Error fetching user data:", error));
+  }, []);
+  console.log(userData);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setPosition({
+        const currentPosition = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
-        });
+        };
+        setPosition(currentPosition);
+        setMapCenter(currentPosition);
+        setMapZoom(13);
       },
       (error) => {
         console.error(error);
@@ -64,6 +85,7 @@ function Map() {
                     location: results[0].geometry.location,
                     name: address.serviceName,
                     address: `${address.street} ${address.house_number}, ${address.plz} ${address.city}`,
+                    serviceId: address._id,
                   });
                 } else {
                   console.error(
@@ -88,8 +110,9 @@ function Map() {
   };
 
   useEffect(() => {
+    let sortedResults = geocodes;
     if (searchQuery === "") {
-      setSearchResults([]);
+      setSearchResults(geocodes);
       return;
     }
 
@@ -109,55 +132,91 @@ function Map() {
 
       return serviceNameMatch || addressMatch || cityMatch || plzMatch;
     });
+    sortedResults.sort((a, b) => {
+      const cityA = a.address.split(", ")[1].toLowerCase();
+      const cityB = b.address.split(", ")[1].toLowerCase();
 
+      if (cityA < cityB) {
+        return -1;
+      }
+      if (cityA > cityB) {
+        return 1;
+      }
+      return 0;
+    });
     setSearchResults(searchResults);
   }, [searchQuery, geocodes]);
-
   return (
     <>
-      <div>
+      <div className="search-container">
         <input
+          className="search-input"
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search..."
         />
-        <ul>
-          {searchResults.map((result, index) => (
-            <li
-              key={index}
-              onClick={() =>
-                handleClick(result.location.lat(), result.location.lng())
-              }
-            >
-              {result.name}
-            </li>
-          ))}
-        </ul>
       </div>
-      <MapContainer
-        center={[position.lat, position.lng]}
-        zoom={10}
-        style={{ height: "400px" }}
-      >
-        <SetMapCenter center={[mapCenter.lat, mapCenter.lng]} zoom={mapZoom} />
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution="Map data &copy; OpenStreetMap contributors"
-          maxZoom={18}
-        />
-        <MarckerClusterGroup>
-          {geocodes.map((geocode) => (
-            <Marker
-              position={[geocode.location.lat(), geocode.location.lng()]}
-              key={`${geocode.location.lat()},${geocode.location.lng()}`}
-              icon={customIcon}
-            >
-              <Popup>{`${geocode.name} \n ${geocode.address}`}</Popup>
-            </Marker>
-          ))}
-        </MarckerClusterGroup>
-      </MapContainer>
+      <div className="map-container">
+        <div className="search-results-wrapper">
+          <ul>
+            {searchResults.map((result, index) => (
+              <li
+                key={index}
+                onClick={() =>
+                  handleClick(result.location.lat(), result.location.lng())
+                }
+              >
+                <h5>
+                  {result.name},{result.address}
+                </h5>
+              </li>
+            ))}
+          </ul>
+          {searchResults.length > resultsToShow && (
+            <button onClick={handleShowMore}>Mehr</button>
+          )}
+        </div>
+        <div className="map-wrapper">
+          <MapContainer
+            center={[mapCenter.lat, mapCenter.lng]}
+            zoom={mapZoom}
+            style={{ height: "400px" }}
+          >
+            <SetMapCenter
+              center={[mapCenter.lat, mapCenter.lng]}
+              zoom={mapZoom}
+            />
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution="Map data &copy; OpenStreetMap contributors"
+              maxZoom={18}
+            />
+            <MarckerClusterGroup>
+              {geocodes.map((geocode) => (
+                <Marker
+                  position={[geocode.location.lat(), geocode.location.lng()]}
+                  key={`${geocode.location.lat()},${geocode.location.lng()}`}
+                  icon={customIcon}
+                >
+                  <>{console.log("first", geocode.serviceId)}</>
+                  <Popup>
+                    {`${geocode.name}`}
+                    <br></br>
+                    {`${geocode.address}`}
+                    <br></br>
+                    <Link
+                      to={`/createbooking?userId=${userId}&serviceId=${geocode.serviceId}&serviceName=${geocode.name}`}
+                    >
+                      more
+                    </Link>
+                  </Popup>
+                </Marker>
+              ))}
+            </MarckerClusterGroup>
+          </MapContainer>
+        </div>
+      </div>
     </>
   );
 }

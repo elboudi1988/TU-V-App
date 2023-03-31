@@ -8,11 +8,33 @@ exports.isAdmin = (req, res, next) => {
   }
   next();
 };
-exports.auth = (req, res, next) => {
+/*exports.auth = (req, res, next) => {
   const token = req.cookies.Authorization;
+  const authHeader = req.headers.authorization;
+  console.log("Authorization header:", authHeader);
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
   }
+  try {
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    req.user = decoded;
+    req.userId = decoded.id;
+    req.companyName = decoded.companyName;
+    req.email = decoded.email;
+    req.role = decoded.role;
+    next();
+  } catch (error) {
+    console.error(error.message);
+    res.status(401).json({ error: "Unauthorized" });
+  }
+};*/
+exports.auth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  const token = authHeader.split(" ")[1];
+
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
     req.user = decoded;

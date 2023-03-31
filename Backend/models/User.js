@@ -35,17 +35,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "password is required"],
   },
 
-  bYear: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  bMonth: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  bDay: {
+  birthDate: {
     type: String,
     required: true,
     trim: true,

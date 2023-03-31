@@ -5,15 +5,21 @@ import "./Navbar.css";
 
 function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("token");
-    setIsLoggedIn(!!token);
+    setIsLoggedIn(token);
+    console.log("navbartoken", token);
   }, []);
 
   const handleMenuClick = () => {
     setShowMenu(!showMenu);
+  };
+
+  const handleProfileMenuClick = () => {
+    setShowProfileMenu(!showProfileMenu);
   };
 
   const handleLogout = () => {
@@ -54,12 +60,36 @@ function Navbar() {
               </>
             ) : (
               <>
-                <button
-                  className="navbar-button navbar-button-secondary"
-                  onClick={handleLogout}
+                <div
+                  className="navbar-profile"
+                  onClick={handleProfileMenuClick}
                 >
-                  Logout
-                </button>
+                  <li>
+                    <span>Profile</span>
+                  </li>
+                  <i className="fas fa-caret-down"></i>
+                </div>
+                {showProfileMenu && (
+                  <ul className="navbar-profile-dropdown">
+                    <li>
+                      <Link to="/profile">My Profile</Link>
+                    </li>
+                    <li>
+                      <Link to="/booking">My booking</Link>
+                    </li>
+                    <li>
+                      <Link to="/settings">Settings</Link>
+                    </li>
+                    <li>
+                      <button
+                        className="navbar-button navbar-button-secondary"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                )}
               </>
             )}
           </div>

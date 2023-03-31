@@ -3,12 +3,31 @@ const ServicePost = require("../models/servicePost");
 const BookingService = require("../models/BookingService");
 //const ServicePost = require("../models/ServicePost");
 
+const getAllServicePosts = async () => {
+  try {
+    const services = await ServicePost.find();
+    const serviceMap = {};
+    for (const service of services) {
+      serviceMap[service._id] = service.serviceName;
+    }
+    return serviceMap;
+  } catch (error) {
+    console.error("Error fetching service posts:", error);
+    return {};
+  }
+};
+
 exports.getUserBooking = async (req, res) => {
   try {
     const userId = req.userId;
-    const bookings = await BookingService.find({ userId: userId });
-    //.populate("userId")
-    // .populate("serviceId");
+    const bookings = await BookingService.find({ userId: userId })
+      .populate("userId")
+      .populate({
+        path: "serviceId",
+        model: "ServicePost",
+        select: "serviceName",
+      });
+
     res.status(200).json(bookings);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -84,12 +103,13 @@ exports.createBooking = async (req, res) => {
   try {
     const { serviceId } = req.params;
     const userId = req.userId;
-
+    const { time } = req.body;
     const { date } = req.body;
     const booking = new BookingService({
       userId: userId,
       serviceId: serviceId,
       date,
+      time,
     });
 
     await booking.save();
