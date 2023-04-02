@@ -16,7 +16,8 @@ function Login() {
 
       // Token im Cookie speichern
       Cookies.set("token", response.data.token, { expires: 7, path: "/" });
-      // Benutzer auf die Startseite umleiten
+      localStorage.setItem("companyName", response.data.companyName);
+      localStorage.setItem("role", response.data.role);
       window.location.href = "/";
     } catch (error) {
       console.log(error);

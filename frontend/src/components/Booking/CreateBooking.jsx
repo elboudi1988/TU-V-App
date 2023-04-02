@@ -90,7 +90,6 @@ const Booking = () => {
         <input type="time" id="time" value={time} onChange={handleTimeChange} />
         <button type="submit">Buchen</button>
       </form>
-      {bookingId && <p>Buchungs-ID: {bookingId}</p>}
     </div>
   );
 };

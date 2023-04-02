@@ -8,6 +8,7 @@ import Logout from "./components/Logout/logout";
 import Navbar from "./components/Navbar";
 import CleintBookings from "./components/Booking/ClientBooking";
 import CreateBooking from "./components/Booking/CreateBooking";
+import CreateServiceForm from "./components/Services/CreateService";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/Booking" element={<CleintBookings />} />
         <Route path="/createbooking" element={<CreateBooking />} />
+        <Route path="/CreateService" element={<CreateServiceForm />} />
       </Routes>
     </Router>
   );

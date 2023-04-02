@@ -11,7 +11,6 @@ function Navbar() {
   useEffect(() => {
     const token = Cookies.get("token");
     setIsLoggedIn(token);
-    console.log("navbartoken", token);
   }, []);
 
   const handleMenuClick = () => {

@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
-const ServiceSchema = mongoose.Schema({
+const SubserviceSchema = new mongoose.Schema({
+  name: { type: String },
+});
+
+const ServiceSchema = new mongoose.Schema({
   serviceName: {
     type: String,
     required: true,
@@ -29,10 +33,15 @@ const ServiceSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  subservices: {
+    type: [SubserviceSchema],
+    default: [],
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
 });
+
 module.exports = mongoose.model("ServicePost", ServiceSchema);
