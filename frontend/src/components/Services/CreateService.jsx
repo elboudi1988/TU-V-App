@@ -9,6 +9,8 @@ const CreateServiceForm = () => {
   const [plz, setPlz] = useState("");
   const [subservices, setSubservices] = useState([]);
   const [subserviceInput, setSubserviceInput] = useState("");
+  const [selectedBookingTimes, setSelectedBookingTimes] = useState([]);
+  const [bookingTime, setBookingTime] = useState("");
 
   const companyName = localStorage.getItem("companyName");
 
@@ -23,6 +25,7 @@ const CreateServiceForm = () => {
       city,
       plz,
       subservices,
+      bookingtime: selectedBookingTimes,
     };
 
     const token = Cookies.get("token");
@@ -48,12 +51,32 @@ const CreateServiceForm = () => {
       console.error(err);
     }
   };
+  const generateTimeSlots = () => {
+    const timeSlots = [];
+    for (let i = 7; i <= 19; i++) {
+      for (let j = 0; j < 60; j += 30) {
+        const hour = i.toString().padStart(2, "0");
+        const minute = j.toString().padStart(2, "0");
+        timeSlots.push(`${hour}:${minute}`);
+      }
+    }
+    return timeSlots;
+  };
 
   const addSubservice = () => {
     if (subserviceInput) {
       setSubservices([...subservices, { name: subserviceInput }]);
       setSubserviceInput("");
     }
+  };
+  const addBookingTime = () => {
+    if (bookingTime && !selectedBookingTimes.includes(bookingTime)) {
+      setSelectedBookingTimes([...selectedBookingTimes, bookingTime]);
+    }
+  };
+  const removeItem = (item, list, setList) => {
+    const newList = list.filter((i) => i !== item);
+    setList(newList);
   };
 
   return (
@@ -108,12 +131,57 @@ const CreateServiceForm = () => {
         <button type="button" onClick={addSubservice}>
           +
         </button>
+        <ul>
+          {subservices.map((subservice, index) => (
+            <li key={index}>
+              {subservice.name}{" "}
+              <span
+                onClick={() =>
+                  removeItem(subservice, subservices, setSubservices)
+                }
+                style={{ cursor: "pointer" }}
+              >
+                &minus;
+              </span>
+            </li>
+          ))}
+        </ul>
       </label>
-      <ul>
-        {subservices.map((subservice, index) => (
-          <li key={index}>{subservice.name}</li>
-        ))}
-      </ul>
+      <label>
+        Booking Time:
+        <select
+          value={bookingTime}
+          onChange={(e) => setBookingTime(e.target.value)}
+        >
+          {generateTimeSlots().map((timeSlot, index) => (
+            <option key={index} value={timeSlot}>
+              {timeSlot}
+            </option>
+          ))}
+        </select>
+        <button type="button" onClick={addBookingTime}>
+          Add Booking Time
+        </button>
+        <ul>
+          {selectedBookingTimes.map((bookingTime, index) => (
+            <li key={index}>
+              {bookingTime}{" "}
+              <span
+                onClick={() =>
+                  removeItem(
+                    bookingTime,
+                    selectedBookingTimes,
+                    setSelectedBookingTimes
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                &minus;
+              </span>
+            </li>
+          ))}
+        </ul>
+      </label>
       <button type="submit">Create Service Post</button>
     </form>
   );

@@ -7,6 +7,7 @@ function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -68,27 +69,51 @@ function Navbar() {
                   </li>
                   <i className="fas fa-caret-down"></i>
                 </div>
-                {showProfileMenu && (
-                  <ul className="navbar-profile-dropdown">
-                    <li>
-                      <Link to="/profile">My Profile</Link>
-                    </li>
-                    <li>
-                      <Link to="/booking">My booking</Link>
-                    </li>
-                    <li>
-                      <Link to="/settings">Settings</Link>
-                    </li>
-                    <li>
-                      <button
-                        className="navbar-button navbar-button-secondary"
-                        onClick={handleLogout}
-                      >
-                        Logout
-                      </button>
-                    </li>
-                  </ul>
-                )}
+                {showProfileMenu &&
+                  (role === "admin" ? (
+                    <ul className="navbar-profile-dropdown">
+                      <li>
+                        <Link to="/profile">My Profile</Link>
+                      </li>
+                      <li>
+                        <Link to="/CreateService">Create a Service </Link>
+                      </li>
+                      <li>
+                        <Link to="/booking">My booking</Link>
+                      </li>
+                      <li>
+                        <Link to="/settings">Settings</Link>
+                      </li>
+                      <li>
+                        <button
+                          className="navbar-button navbar-button-secondary"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  ) : (
+                    <ul className="navbar-profile-dropdown">
+                      <li>
+                        <Link to="/profile">My Profile</Link>
+                      </li>
+                      <li>
+                        <Link to="/booking">My booking</Link>
+                      </li>
+                      <li>
+                        <Link to="/settings">Settings</Link>
+                      </li>
+                      <li>
+                        <button
+                          className="navbar-button navbar-button-secondary"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  ))}
               </>
             )}
           </div>

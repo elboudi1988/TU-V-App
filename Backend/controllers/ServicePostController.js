@@ -8,6 +8,7 @@ exports.createServicePost = async (req, res) => {
 
     // Create a new service post with the user ID
     const subservices = req.body.subservices;
+    const bookingtime = req.body.bookingtime;
     const servicePost = new ServicePost({
       serviceName: req.body.serviceName,
       street: req.body.street,
@@ -17,6 +18,7 @@ exports.createServicePost = async (req, res) => {
       companyName: companyName,
       userId: userId,
       subservices: subservices,
+      bookingtime: bookingtime,
     });
     // Save the service post to the database
     await servicePost.save();

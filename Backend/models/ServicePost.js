@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const SubserviceSchema = new mongoose.Schema({
   name: { type: String },
 });
-
+const bookingtimeSchema = new mongoose.Schema({
+  hour_time: { type: String },
+});
 const ServiceSchema = new mongoose.Schema({
   serviceName: {
     type: String,
@@ -35,6 +37,10 @@ const ServiceSchema = new mongoose.Schema({
   },
   subservices: {
     type: [SubserviceSchema],
+    default: [],
+  },
+  bookingtime: {
+    type: [String],
     default: [],
   },
   userId: {
