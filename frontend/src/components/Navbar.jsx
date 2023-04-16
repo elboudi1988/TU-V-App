@@ -82,6 +82,9 @@ function Navbar() {
                         <Link to="/booking">My booking</Link>
                       </li>
                       <li>
+                        <Link to="/ServicePosts">My Services</Link>
+                      </li>
+                      <li>
                         <Link to="/settings">Settings</Link>
                       </li>
                       <li>

@@ -8,8 +8,8 @@ import "./Map.css";
 import fetchUserData from "../GetUser";
 
 function Map({ userId }) {
+  const [position, setPosition] = useState({ lat: 51.1657, lng: 10.4515 });
   const [geocodes, setGeocodes] = useState([]);
-  const [position, setPosition] = useState({ lat: 0, lng: 0 });
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [mapCenter, setMapCenter] = useState(position);
@@ -65,6 +65,21 @@ function Map({ userId }) {
       }
     );
   }, []);
+  async function fetchServiceData() {
+    try {
+      const response = await fetch("http://localhost:8000/api/Services");
+      const data = await response.json();
+      const services = data.map((service) => {
+        return {
+          name: service.serviceName,
+          address: `${service.street} ${service.house_number}, ${service.plz} ${service.city}`,
+        };
+      });
+      return services;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     fetch("http://localhost:8000/api/Services")

@@ -53,12 +53,21 @@ const CreateServiceForm = () => {
   };
   const generateTimeSlots = () => {
     const timeSlots = [];
-    for (let i = 7; i <= 19; i++) {
-      for (let j = 0; j < 60; j += 30) {
-        const hour = i.toString().padStart(2, "0");
-        const minute = j.toString().padStart(2, "0");
-        timeSlots.push(`${hour}:${minute}`);
-      }
+    const startDate = new Date();
+    startDate.setHours(7);
+    startDate.setMinutes(0);
+    const endDate = new Date();
+    endDate.setHours(19);
+    endDate.setMinutes(30);
+    const timeIncrement = 30 * 60 * 1000; // 30 minutes in milliseconds
+    for (
+      let currentTime = startDate;
+      currentTime <= endDate;
+      currentTime = new Date(currentTime.getTime() + timeIncrement)
+    ) {
+      const hour = currentTime.getHours().toString().padStart(2, "0");
+      const minute = currentTime.getMinutes().toString().padStart(2, "0");
+      timeSlots.push(`${hour}:${minute}`);
     }
     return timeSlots;
   };

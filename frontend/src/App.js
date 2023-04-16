@@ -9,6 +9,8 @@ import Navbar from "./components/Navbar";
 import CleintBookings from "./components/Booking/ClientBooking";
 import CreateBooking from "./components/Booking/CreateBooking";
 import CreateServiceForm from "./components/Services/CreateService";
+import ServicePage from "./components/Services/Service";
+import ServicePosts from "./components/Services/ServicesAdmin";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path="/Booking" element={<CleintBookings />} />
         <Route path="/createbooking" element={<CreateBooking />} />
         <Route path="/CreateService" element={<CreateServiceForm />} />
+        <Route path="/Service" element={<ServicePage />} />
+        <Route path="/ServicePosts" element={<ServicePosts />} />
       </Routes>
     </Router>
   );
