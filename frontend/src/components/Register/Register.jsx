@@ -3,6 +3,7 @@ import ReactSwitch from "react-switch";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "./Register.css";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -71,165 +72,174 @@ function Register() {
       </div>
 
       {!checked ? (
-        <div>
+        <div className="container">
           <h1>Client</h1>
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-          <form onSubmit={handleSubmit}>
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Password:</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Anrede:</label>
-            <select
-              name="anrede"
-              value={formData.anrede}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="">Bitte auswählen</option>
-              <option value="Herr">Herr</option>
-              <option value="Frau">Frau</option>
-            </select>
+          <div className="input-container">
+            <form onSubmit={handleSubmit}>
+              <label>Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Password:</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Anrede:</label>
+              <select
+                name="anrede"
+                value={formData.anrede}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Bitte auswählen</option>
+                <option value="Herr">Herr</option>
+                <option value="Frau">Frau</option>
+              </select>
 
-            <label>First Name:</label>
-            <input
-              type="text"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Last Name:</label>
-            <input
-              type="text"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleInputChange}
-              required
-            />
-            <h1>Geburtsdatum</h1>
-            <DatePicker
-              selected={formData.birthDate}
-              onChange={handleDateChange}
-              dateFormat="dd.MM.yyyy"
-              name="birthDate"
-              required
-            />
-            {/* Weitere Felder für Benutzerdetails */}
-            <button type="submit">Register</button>
-          </form>
+              <label>First Name:</label>
+              <input
+                type="text"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Last Name:</label>
+              <input
+                type="text"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Geburtsdatum</label>
+              <DatePicker
+                selected={formData.birthDate}
+                onChange={handleDateChange}
+                dateFormat="dd.MM.yyyy"
+                name="birthDate"
+                required
+              />
+              {/* Weitere Felder für Benutzerdetails */}
+              <button type="submit" className="button">
+                Register
+              </button>
+            </form>
+          </div>
         </div>
       ) : (
-        <div>
+        <div className="container">
           <h1>Admin</h1>
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-          <form onSubmit={handleSubmit}>
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Password:</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Anrede:</label>
-            <select
-              name="anrede"
-              value={formData.anrede}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="">Bitte auswählen</option>
-              <option value="Herr">Herr</option>
-              <option value="Frau">Frau</option>
-            </select>
+          <div className="input-container">
+            <form onSubmit={handleSubmit}>
+              <label>Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Password:</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Anrede:</label>
 
-            <label>First Name:</label>
-            <input
-              type="text"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Last Name:</label>
-            <input
-              type="text"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleInputChange}
-              required
-            />
-            <h1>Geburtsdatum</h1>
-            <DatePicker
-              selected={formData.birthDate}
-              onChange={handleDateChange}
-              dateFormat="dd.MM.yyyy"
-              name="birthDate"
-              required
-            />
-            <label>companyName:</label>
-            <input
-              type=""
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleInputChange}
-              required
-            />
-            <label>street:</label>
-            <input
-              type=""
-              name="street"
-              value={formData.street}
-              onChange={handleInputChange}
-              required
-            />
-            <label>House Number:</label>
-            <input
-              type=""
-              name="house_number"
-              value={formData.house_number}
-              onChange={handleInputChange}
-              required
-            />
-            <label>city:</label>
-            <input
-              type=""
-              name="city"
-              value={formData.city}
-              onChange={handleInputChange}
-              required
-            />
-            <label>plz:</label>
-            <input
-              type=""
-              name="plz"
-              value={formData.plz}
-              onChange={handleInputChange}
-              required
-            />
-            <button type="submit">Register</button>
-          </form>
+              <select
+                name="anrede"
+                value={formData.anrede}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Bitte auswählen</option>
+                <option value="Herr">Herr</option>
+                <option value="Frau">Frau</option>
+              </select>
+
+              <label>First Name:</label>
+              <input
+                type="text"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Last Name:</label>
+              <input
+                type="text"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Geburtsdatum</label>
+              <DatePicker
+                selected={formData.birthDate}
+                onChange={handleDateChange}
+                dateFormat="dd.MM.yyyy"
+                name="birthDate"
+                required
+              />
+              <label>companyName:</label>
+              <input
+                type=""
+                name="companyName"
+                value={formData.companyName}
+                onChange={handleInputChange}
+                required
+              />
+              <label>street:</label>
+              <input
+                type=""
+                name="street"
+                value={formData.street}
+                onChange={handleInputChange}
+                required
+              />
+              <label>House Number:</label>
+              <input
+                type=""
+                name="house_number"
+                value={formData.house_number}
+                onChange={handleInputChange}
+                required
+              />
+              <label>city:</label>
+              <input
+                type=""
+                name="city"
+                value={formData.city}
+                onChange={handleInputChange}
+                required
+              />
+              <label>plz:</label>
+              <input
+                type=""
+                name="plz"
+                value={formData.plz}
+                onChange={handleInputChange}
+                required
+              />
+              <button type="submit" className="button">
+                Register
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </>

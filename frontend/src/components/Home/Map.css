@@ -59,17 +59,17 @@ button:hover {
   border-color: #007bff;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
+
 /* Map.css */
 .map-container {
   display: flex;
-
   justify-content: center;
   align-items: flex-start;
 }
 
 .map-wrapper {
-  flex: 0 0 70%;
-  height: 700px;
+  flex: 0 0 80%;
+  height: 700px; /* Höhe der Karte anpassen */
   margin-right: 10px;
 }
 

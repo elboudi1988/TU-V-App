@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import "../Register/Register.css";
 
 const ServicePosts = () => {
   const [servicePosts, setServicePosts] = useState([]);
@@ -43,28 +44,30 @@ const ServicePosts = () => {
   return (
     <div>
       <h1>Service Posts</h1>
-      <ul>
+      <ul className="service-post-list">
         {servicePosts.map((post) => (
-          <li key={post._id}>
-            <h2>Dienst: </h2>
-            <h3>{post.serviceName}</h3>
-            <p>{post.companyName}</p>
-            <p>
-              {post.street} {post.house_number}, {post.city}, {post.zipCode}
-            </p>
-            <h4>Subservices:</h4>
-            <ul>
-              {(post.subservices || []).map((subservice, index) => (
-                <li key={index}>{subservice.name}</li>
-              ))}
-            </ul>
-            <h4>Booking Times:</h4>
-            <ul>
-              {(post.bookingtime || []).map((time, index) => (
-                <li key={index}>{time}</li>
-              ))}
-            </ul>
-          </li>
+          <div className="container">
+            <li key={post._id}>
+              <h2>Dienst: </h2>
+              <h3>{post.serviceName}</h3>
+              <p>{post.companyName}</p>
+              <p>
+                {post.street} {post.house_number}, {post.city}, {post.zipCode}
+              </p>
+              <h4>Subservices:</h4>
+              <ul>
+                {(post.subservices || []).map((subservice, index) => (
+                  <li key={index}>{subservice.name}</li>
+                ))}
+              </ul>
+              <h4>Booking Times:</h4>
+              <ul>
+                {(post.bookingtime || []).map((time, index) => (
+                  <li key={index}>{time}</li>
+                ))}
+              </ul>
+            </li>
+          </div>
         ))}
       </ul>
     </div>

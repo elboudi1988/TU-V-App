@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
+import "../Register/Register.css";
 
 const CreateServiceForm = () => {
   const [serviceName, setServiceName] = useState("");
@@ -89,110 +90,116 @@ const CreateServiceForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Service Name:
-        <input
-          type="text"
-          value={serviceName}
-          onChange={(e) => setServiceName(e.target.value)}
-        />
-      </label>
-      <label>
-        Street:
-        <input
-          type="text"
-          value={street}
-          onChange={(e) => setStreet(e.target.value)}
-        />
-      </label>
-      <label>
-        House Number:
-        <input
-          type="text"
-          value={houseNumber}
-          onChange={(e) => setHouseNumber(e.target.value)}
-        />
-      </label>
-      <label>
-        City:
-        <input
-          type="text"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-      </label>
-      <label>
-        PLZ:
-        <input
-          type="text"
-          value={plz}
-          onChange={(e) => setPlz(e.target.value)}
-        />
-      </label>
-      <label>
-        Subservices:
-        <input
-          type="text"
-          value={subserviceInput}
-          onChange={(e) => setSubserviceInput(e.target.value)}
-        />
-        <button type="button" onClick={addSubservice}>
-          +
-        </button>
-        <ul>
-          {subservices.map((subservice, index) => (
-            <li key={index}>
-              {subservice.name}{" "}
-              <span
-                onClick={() =>
-                  removeItem(subservice, subservices, setSubservices)
-                }
-                style={{ cursor: "pointer" }}
-              >
-                &minus;
-              </span>
-            </li>
-          ))}
-        </ul>
-      </label>
-      <label>
-        Booking Time:
-        <select
-          value={bookingTime}
-          onChange={(e) => setBookingTime(e.target.value)}
-        >
-          {generateTimeSlots().map((timeSlot, index) => (
-            <option key={index} value={timeSlot}>
-              {timeSlot}
-            </option>
-          ))}
-        </select>
-        <button type="button" onClick={addBookingTime}>
-          Add Booking Time
-        </button>
-        <ul>
-          {selectedBookingTimes.map((bookingTime, index) => (
-            <li key={index}>
-              {bookingTime}{" "}
-              <span
-                onClick={() =>
-                  removeItem(
-                    bookingTime,
-                    selectedBookingTimes,
-                    setSelectedBookingTimes
-                  )
-                }
-                style={{ cursor: "pointer" }}
-              >
-                &minus;
-              </span>
-            </li>
-          ))}
-        </ul>
-      </label>
-      <button type="submit">Create Service Post</button>
-    </form>
+    <div className="container">
+      <div className="input-container">
+        <form onSubmit={handleSubmit}>
+          <label>
+            Service Name:
+            <input
+              type="text"
+              value={serviceName}
+              onChange={(e) => setServiceName(e.target.value)}
+            />
+          </label>
+          <label>
+            Street:
+            <input
+              type="text"
+              value={street}
+              onChange={(e) => setStreet(e.target.value)}
+            />
+          </label>
+          <label>
+            House Number:
+            <input
+              type="text"
+              value={houseNumber}
+              onChange={(e) => setHouseNumber(e.target.value)}
+            />
+          </label>
+          <label>
+            City:
+            <input
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </label>
+          <label>
+            PLZ:
+            <input
+              type="text"
+              value={plz}
+              onChange={(e) => setPlz(e.target.value)}
+            />
+          </label>
+          <label>
+            Subservices:
+            <input
+              type="text"
+              value={subserviceInput}
+              onChange={(e) => setSubserviceInput(e.target.value)}
+            />
+            <button type="button" className="button" onClick={addSubservice}>
+              +
+            </button>
+            <ul>
+              {subservices.map((subservice, index) => (
+                <li key={index}>
+                  {subservice.name}{" "}
+                  <span
+                    onClick={() =>
+                      removeItem(subservice, subservices, setSubservices)
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    &minus;
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </label>
+          <label>
+            Booking Time:
+            <select
+              value={bookingTime}
+              onChange={(e) => setBookingTime(e.target.value)}
+            >
+              {generateTimeSlots().map((timeSlot, index) => (
+                <option key={index} value={timeSlot}>
+                  {timeSlot}
+                </option>
+              ))}
+            </select>
+            <button type="button" className="button" onClick={addBookingTime}>
+              Add Booking Time
+            </button>
+            <ul>
+              {selectedBookingTimes.map((bookingTime, index) => (
+                <li key={index}>
+                  {bookingTime}{" "}
+                  <span
+                    onClick={() =>
+                      removeItem(
+                        bookingTime,
+                        selectedBookingTimes,
+                        setSelectedBookingTimes
+                      )
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    &minus;
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </label>
+          <button type="submit" className="button">
+            Create Service Post
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 

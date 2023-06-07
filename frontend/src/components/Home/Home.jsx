@@ -194,7 +194,7 @@ function Map({ userId }) {
         </div>
         <div className="map-wrapper">
           <MapContainer
-            center={[mapCenter.lat, mapCenter.lng]}
+            center={[position.lat, position.lng]}
             zoom={mapZoom}
             style={{ height: "400px" }}
           >
