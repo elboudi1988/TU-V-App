@@ -46,6 +46,7 @@ const ServicePosts = () => {
       <ul>
         {servicePosts.map((post) => (
           <li key={post._id}>
+            <h2>Dienst: </h2>
             <h3>{post.serviceName}</h3>
             <p>{post.companyName}</p>
             <p>
