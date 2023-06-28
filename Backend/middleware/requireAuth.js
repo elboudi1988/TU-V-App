@@ -8,10 +8,10 @@ exports.isAdmin = (req, res, next) => {
   }
   next();
 };
-/*exports.auth = (req, res, next) => {
-  const token = req.cookies.Authorization;
-  const authHeader = req.headers.authorization;
-  console.log("Authorization header:", authHeader);
+exports.auth = (req, res, next) => {
+  const token =
+    req.cookies.Authorization || req.headers.authorization.split(" ")[1];
+
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
   }
@@ -27,8 +27,8 @@ exports.isAdmin = (req, res, next) => {
     console.error(error.message);
     res.status(401).json({ error: "Unauthorized" });
   }
-};*/
-exports.auth = (req, res, next) => {
+};
+/*exports.auth = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -47,4 +47,4 @@ exports.auth = (req, res, next) => {
     console.error(error.message);
     res.status(401).json({ error: "Unauthorized" });
   }
-};
+};*/

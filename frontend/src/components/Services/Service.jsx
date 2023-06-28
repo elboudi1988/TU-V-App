@@ -27,6 +27,7 @@ function ServicePage() {
         console.error("Error fetching Service:", error);
       });
   }, []);
+  console.log("frrrr");
   console.log("bookings", service);
   return (
     <div className="user-bookings">
